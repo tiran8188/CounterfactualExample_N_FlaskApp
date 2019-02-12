@@ -1,0 +1,61 @@
+{% extends "bootstrap/base.html" %}
+
+{% block content%}
+
+<style>
+div {
+  padding: 50px;
+}
+</style>
+
+<div class="container">
+
+	<div class="jumbotron" style="background-color: turquoise">
+		<h2> Flask RESTApi</h2>
+		<p> Test 1 2 3 </p>
+	</div>
+
+</div>
+
+<div class="">
+	<h1>Please fill in the Inputs</h1>
+	<form accept="" method="POST" style="background-color: lightblue">
+		<div class="form-group" style="width: 450px;">
+		    <label for="multiselect">Features to Freeze</label>
+		    <select multiple class="form-control" id="multiselect" size="10" name="multiselect">
+		      <option>bought_homuytye_before</option>
+		      <option>credit_score</option>
+		      <option>dti</option>
+		      <option>is_insured</option>
+		      <option>ltv</option>
+		      <option>multiborrowers</option>
+		      <option>orig_rate</option>
+		      <option>prop_type</option>
+		      <option>purpose</option>
+		      <option>state</option>
+		    </select>
+		</div>
+
+
+		<input type="text" placeholder="Input_One" name="input_one" value="{{request.form.input_one}}" >
+		<input type="text" placeholder="Input_Two" name="input_two" value="{{request.form.input_two}}" >
+		<input type="text" placeholder="Input_Three" name="input_three" value="{{request.form.input_three}}" >
+		<input type="text" placeholder="Input_Four" name="input_four" value="{{request.form.input_four}}" >
+		<input type="text" placeholder="Input_Five" name="input_five" value="{{request.form.input_five}}" >
+		<input type="text" placeholder="Input_Six" name="input_six" value="{{request.form.input_six}}" >
+		<input type="text" placeholder="Input_Seven" name="input_seven" value="{{request.form.input_seven}}" >
+		<input type="text" placeholder="Input_Nine" name="input_nine" value="{{request.form.input_nine}}" >
+		<input type="text" placeholder="Input_Ten" name="input_ten" value="{{request.form.input_ten}}" >
+		<br>
+		<br>
+		<input class="btn btn-default" type="submit" value='Submit'>
+	</form>	
+</div>
+
+{% endblock %}
+
+{% block styles %}
+{{super()}} <!-- Allows Javascripts and other styles to be inclusive in bootstrap -->
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='css/main.css')}}">
+{% endblock %}

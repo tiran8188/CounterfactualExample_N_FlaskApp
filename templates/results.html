@@ -1,0 +1,59 @@
+{% extends "bootstrap/base.html" %}
+
+{% block content%}
+
+
+<style> 
+body{
+  font:15px/1.5 Arial, Helvetica,sans-serif;
+  padding: 20px;
+  background-color: lightsteelblue;
+  margin-left: 20px;
+}
+
+result_cl{
+	text-align: center;
+	display:flex; 
+	flex-direction: column; 
+	justify-content: center; 
+	align-items: center
+}
+
+
+.clear { clear: both; height: 0; line-height: 0; }
+.floatright { float: right; }
+</style>
+
+
+
+
+
+<div class="container" style="display:flex; flex-direction: row; justify-content: center; align-items: center">
+
+	<div class="jumbotron" style="background-color: steelblue;align-items: center;width: 100%;height: 150px">
+		<h1 style="text-align: center;margin-top: 0px;font-size: 45px;color: white">Resulting Counter Explanation</h1>
+	</div>
+
+</div>
+
+<div class="result_cl" style="display:flex; flex-direction: column; justify-content: center; align-items: center" >
+	<h2>The below features to altered for the counterfactual example</h2>
+	   {% for key, value in x.items() %}
+	      <h3>{{key}} changed to {{value}}</h3>
+	   {% endfor %}
+
+	 <h3>The counterfactual example changed the decision from {{initial_decision}} to {{cf_decision}}</h3>
+</div>
+
+<div class="" style="display:flex; flex-direction: column; justify-content: center; align-items: center">
+	<label>Solution found at norm {{found_norm}} </label>
+	<label>Number of points found {{num_found}}</label>
+</div>
+
+{% endblock %}
+
+{% block styles %}
+{{super()}} <!-- Allows Javascripts and other styles to be inclusive in bootstrap -->
+<link rel="stylesheet"
+      href="{{url_for('.static', filename='css/main.css')}}">
+{% endblock %}

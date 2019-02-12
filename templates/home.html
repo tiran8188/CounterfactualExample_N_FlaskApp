@@ -1,0 +1,151 @@
+{% extends "bootstrap/base.html" %}
+
+{% block content%}
+
+<head>
+  <style> 
+  body{
+    font:15px/1.5 Arial, Helvetica,sans-serif;
+    padding: 20px;
+    background-color: lightsteelblue;
+    margin-left: 20px;
+  }
+  </style>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>  
+  <script type="text/javascript"></script>
+
+</head>
+
+
+<div class="container">
+
+	<div class="jumbotron" style="background-color: steelblue;align-items: center;width: 100%;height: 100px">
+    <h1 style="text-align: center;margin-top: 0px;font-size: 45px;color: white">Counterfactual Explanation</h1> 
+	</div>
+
+</div>
+
+<form action="/results" method="POST" style="background-color: transparent;">
+    <h2>Features to Freeze</h2>
+    <div class="" style="display:flex; flex-direction: row;justify-content:left; align-items: bottom;font-size: 16px">
+      <input type="checkbox" name="multiselect" value="bought_home_before">bought home before <br>
+      <input type="checkbox" name="multiselect" value="credit_score"> credit score <br>
+      <input type="checkbox" name="multiselect" value="dti"> debt to income ratio <br>
+      <input type="checkbox" name="multiselect" value="is_insured"> property is insured <br>
+      <input type="checkbox" name="multiselect" value="ltv"> ltv <br>
+      <input type="checkbox" name="multiselect" value="multi_borrowers"> borrowes multiple times <br>
+      <input type="checkbox" name="multiselect" value="orig_rate"> original rate <br>
+      <input type="checkbox" name="multiselect" value="prop_type"> property type <br>
+      <input type="checkbox" name="multiselect" value="purpose"> purpose <br>
+      <input type="checkbox" name="multiselect" value="state"> applicants current addressed state <br>
+    </div>
+
+    <h2>Input Values</h2>
+    <label for="Var1">credit score:</label>
+      <input type="float" id="Var1" name="credit_score"  value="820" min="300" max="850">
+    <label for="Var2">debt to income ratio :</label>
+      <input type="float" id="Var2" name="dti" value="10" min="0" max="100">
+    <label for="Var3" >ltv:</label>
+      <input type="float"  id="Var3" name="ltv" value="10" min="0" max="100">
+    <label for="Var4" >original rate:</label>
+      <input type="float" id="Var4" name="orig_rate" value="5" min="0" max="60">
+    <br>
+
+    <label for="Var5">bought home before:
+      <select id="Var5" name="bought_home_before"" >
+        <option value="0">0</option>
+        <option value="1">1</option>
+      </select>
+    </label>
+
+    <label for="Var6">property is insured:
+      <select id="Var6" name="is_insured" >
+        <option value="0">0</option>
+        <option value="1">1</option>
+      </select>
+    </label>
+
+    <label for="Var7">borrowes multiple times :
+      <select id="Var7" name="multi_borrowers" >
+        <option value="0">0</option>
+        <option value="1">1</option>
+      </select>
+    </label>
+
+    <label for="Var8">property type:
+      <select id="Var8" name="prop_type" >
+        <option value="Planned unit development">Planned unit development</option>
+        <option value="Manufactured housing">Manufactured housing</option>
+        <option value="Condo">Condo</option>
+        <option value="Co-op">Co-op</option>
+        <option value="1-4 Fee simple">1-4 Fee simple</option>
+      </select>
+    </label>
+
+    <label for="Var9">purpose:
+      <select id="Var9" name="purpose" >
+        <option value="Cash-out refinance">Cash-out refinance</option>
+        <option value="No cash-out refinance">No cash-out refinance</option>
+        <option value="Purchase">Purchase</option>
+      </select>
+    </label>
+
+    <label for="Var10">applicants current addressed state:
+      <select id="Var10" name="state" >
+        <option value="PR">PR</option>
+        <option value="LA">LA</option>
+        <option value="GA">GA</option>
+        <option value="MN">MN</option>
+        <option value="TN">TN</option>
+        <option value="CO">CO</option>
+        <option value="DC">DC</option>
+        <option value="AL">AL</option>
+        <option value="WI">WI</option>
+        <option value="CA">CA</option>
+        <option value="MI">MI</option>
+        <option value="FL">FL</option>
+        <option value="NY">NY</option>
+        <option value="others">others</option>    
+      </select>
+    </label>
+
+ 
+    <h2>Search Parameters</h2>
+    The norm of the first diamond
+    <br> 
+    <label for="param1"></label><input type="float" id="param1" name="start_norm"  value="1.0">
+
+    
+    <br>The norm increase for each new diamond
+    <br> 
+    <label for="param2"></label><input type="float" id="param2" name="step_size"  value="0.05"> 
+
+    
+    <br>The number of search points to look for each new diamond
+    <br> 
+    <label for="param3"></label><input type="number" id="param3" name="ppd"  value="100">
+
+    
+    <br>The number of diamonds after which to stop the search
+    <br> 
+    <label for="param4"></label><input type="number" id="param4" name="max_iter"  value="100">
+
+    
+    <br>How much above the decision threshold should search point be, to be used as dense point
+    <br>
+    <label for="param5"></label><input type="float" id="param5" name="sparsifier_buffer"  value="0.05">
+  
+
+  <br>
+  <br>
+  <input class="btn btn-default" type="submit" value='Submit' onclick="$('#loading').show();" >
+
+ </form>
+
+ <br>
+
+ <div id="loading" style="display:none; align-content: center;text-align: center;justify-content: center;font-size: 45px;color: white;margin-bottom: 0px margin-top: 50vh;position: relative;">
+  <img src="disc_loading.gif" alt="" />....Loading....</div>
+
+{% endblock %}
