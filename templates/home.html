@@ -21,7 +21,7 @@
 <div class="container">
 
 	<div class="jumbotron" style="background-color: steelblue;align-items: center;width: 100%;height: 100px">
-    <h1 style="text-align: center;margin-top: 0px;font-size: 45px;color: white">Counterfactual Explanation</h1> 
+    <h1 style="text-align: center;margin-top: 0px;font-size: 45px;color: white">Mortgage application counterfactual explanation</h1> 
 	</div>
 
 </div>
@@ -32,13 +32,13 @@
       <input type="checkbox" name="multiselect" value="bought_home_before">bought home before <br>
       <input type="checkbox" name="multiselect" value="credit_score"> credit score <br>
       <input type="checkbox" name="multiselect" value="dti"> debt to income ratio <br>
-      <input type="checkbox" name="multiselect" value="is_insured"> property is insured <br>
-      <input type="checkbox" name="multiselect" value="ltv"> ltv <br>
-      <input type="checkbox" name="multiselect" value="multi_borrowers"> borrowes multiple times <br>
-      <input type="checkbox" name="multiselect" value="orig_rate"> original rate <br>
+      <input type="checkbox" name="multiselect" value="is_insured"> mortgage is insured <br>
+      <input type="checkbox" name="multiselect" value="loan to value ratio"> ltv <br>
+      <input type="checkbox" name="multiselect" value="multi_borrowers"> co-borrower exists <br>
+      <input type="checkbox" name="multiselect" value="orig_rate"> interest rate <br>
       <input type="checkbox" name="multiselect" value="prop_type"> property type <br>
       <input type="checkbox" name="multiselect" value="purpose"> purpose <br>
-      <input type="checkbox" name="multiselect" value="state"> applicants current addressed state <br>
+      <input type="checkbox" name="multiselect" value="state"> property is located in state <br>
     </div>
 
     <h2>Input Values</h2>
@@ -46,30 +46,30 @@
       <input type="float" id="Var1" name="credit_score"  value="820" min="300" max="850">
     <label for="Var2">debt to income ratio :</label>
       <input type="float" id="Var2" name="dti" value="10" min="0" max="100">
-    <label for="Var3" >ltv:</label>
+    <label for="Var3" >loan to value ratio:</label>
       <input type="float"  id="Var3" name="ltv" value="10" min="0" max="100">
-    <label for="Var4" >original rate:</label>
+    <label for="Var4" >interest rate:</label>
       <input type="float" id="Var4" name="orig_rate" value="5" min="0" max="60">
     <br>
 
     <label for="Var5">bought home before:
       <select id="Var5" name="bought_home_before"" >
-        <option value="0">0</option>
-        <option value="1">1</option>
+        <option value="0">No</option>
+        <option value="1">Yes</option>
       </select>
     </label>
 
-    <label for="Var6">property is insured:
+    <label for="Var6">mortgage is insured:
       <select id="Var6" name="is_insured" >
-        <option value="0">0</option>
-        <option value="1">1</option>
+        <option value="0">No</option>
+        <option value="1">Yes</option>
       </select>
     </label>
 
-    <label for="Var7">borrowes multiple times :
+    <label for="Var7">co-borrower exists :
       <select id="Var7" name="multi_borrowers" >
-        <option value="0">0</option>
-        <option value="1">1</option>
+        <option value="0">No</option>
+        <option value="1">Yes</option>
       </select>
     </label>
 
@@ -83,7 +83,7 @@
       </select>
     </label>
 
-    <label for="Var9">purpose:
+    <label for="Var9">loan purpose:
       <select id="Var9" name="purpose" >
         <option value="Cash-out refinance">Cash-out refinance</option>
         <option value="No cash-out refinance">No cash-out refinance</option>
@@ -91,7 +91,7 @@
       </select>
     </label>
 
-    <label for="Var10">applicants current addressed state:
+    <label for="Var10">property is located in state:
       <select id="Var10" name="state" >
         <option value="PR">PR</option>
         <option value="LA">LA</option>
@@ -132,7 +132,7 @@
     <label for="param4"></label><input type="number" id="param4" name="max_iter"  value="100">
 
     
-    <br>How much above the decision threshold should search point be, to be used as dense point
+    <br>Sparsifier buffer
     <br>
     <label for="param5"></label><input type="float" id="param5" name="sparsifier_buffer"  value="0.05">
   

@@ -92,65 +92,75 @@ def index():
 
 @app.route('/results', methods=['GET', 'POST'])
 def results():
-    if request.method == 'POST':
-        val_list = ['credit_score', 'dti', 'ltv', 'orig_rate',
-                    'bought_home_before', 'is_insured', 'multi_borrowers',
-                    'prop_type', 'purpose', 'state']
+    try:
+       if request.method == 'POST':
+            val_list = ['credit_score', 'dti', 'ltv', 'orig_rate',
+                        'bought_home_before', 'is_insured', 'multi_borrowers',
+                        'prop_type', 'purpose', 'state']
 
-        param_list = ["start_norm", "step_size", "ppd", "max_iter", "sparsifier_buffer"]
+            param_list = ["start_norm", "step_size", "ppd", "max_iter", "sparsifier_buffer"]
 
-        multiselect = request.form.getlist('multiselect')
-        form_data = request.form.to_dict()
-        input_data = {k: form_data[k] for k in val_list}
-        param_data = {k: form_data[k] for k in param_list}
+            multiselect = request.form.getlist('multiselect')
+            form_data = request.form.to_dict()
+            input_data = {k: form_data[k] for k in val_list}
+            param_data = {k: form_data[k] for k in param_list}
 
-        for k, v in input_data.items():
-            if k in ['credit_score', 'dti', 'ltv', 'orig_rate']:
-                input_data[k] = float(v)
-            elif k in ['bought_home_before', 'is_insured', 'multi_borrowers']:
-                input_data[k] = int(v)
+            for k, v in input_data.items():
+                if k in ['credit_score', 'dti', 'ltv', 'orig_rate']:
+                    input_data[k] = float(v)
+                elif k in ['bought_home_before', 'is_insured', 'multi_borrowers']:
+                    input_data[k] = int(v)
+                else:
+                    input_data[k] = v
+
+            for k, v in param_data.items():
+                if k == 'ppd':
+                    param_data[k] = int(v)
+                else:
+                    try:
+                        param_data[k] = float(v)
+                    except:
+                        pass
+
+            initial_proba, initial_decision, cf_examples, _, cf_proba, cf_decision, found_norm, num_found = counterfactual(input_data, param_data, multiselect)
+
+            mapping_dict = {'credit_score': 'Credit score',
+                            'dti': 'Debt to income ratio',
+                            'ltv': 'Loan to value',
+                            'orig_rate': 'Interest rate',
+                            'bought_home_before': 'Bought home before',
+                            'is_insured': 'Mortgage is insured',
+                            'multi_borrowers': 'Co-borrower exists',
+                            'prop_type': 'Property type',
+                            'purpose': 'Purpose',
+                            'state': 'Property is located in state'}
+
+
+            for k, v in cf_examples.items():
+                if k in ['bought_home_before', 'is_insured', 'multi_borrowers']:
+                    if k == 0:
+                        cf_examples[k] = 'No'
+                    else:
+                        cf_examples[k] = 'Yes'
+
+            cf_user_examples = {}
+            for k, v in cf_examples.items():
+                x = mapping_dict[k]
+                cf_user_examples[x] = v
+
+            if initial_decision == 1:
+                initial_decision = 'accepted'
+                cf_decision = 'rejected'
             else:
-                input_data[k] = v
+                initial_decision = 'rejected'
+                cf_decision = 'accepted'
 
-        for k, v in param_data.items():
-            if k == 'ppd':
-                param_data[k] = int(v)
-            else:
-                try:
-                    param_data[k] = float(v)
-                except:
-                    pass
-
-        initial_proba, initial_decision, cf_examples, _, cf_proba, cf_decision, found_norm, num_found = counterfactual(input_data, param_data, multiselect)
-
-        mapping_dict = {'credit_score': 'credit score',
-                        'dti': 'debt to income ratio',
-                        'ltv': 'ltv',
-                        'orig_rate': 'original rate',
-                        'bought_home_before': 'bought home before',
-                        'is_insured': 'property is insured',
-                        'multi_borrowers': 'borrowes multiple times',
-                        'prop_type': 'property type',
-                        'purpose': 'purpose',
-                        'state': 'applicants current addressed state'}
-
-        cf_user_examples = {}
-        for k, v in cf_examples.items():
-            x = mapping_dict[k]
-            cf_user_examples[x] = v
-
-        if initial_decision == 1:
-            initial_decision = 'accepted'
-            cf_decision = 'rejected'
-        else:
-            initial_decision = 'rejected'
-            cf_decision = 'accepted'
-
-        return render_template('results.html', form_data=input_data, multiselect=multiselect, param_data=param_data,
-                               x=cf_user_examples, initial_decision=initial_decision, cf_decision=cf_decision,
-                               found_norm=found_norm, num_found=num_found)
+            return render_template('results.html', form_data=input_data, multiselect=multiselect, param_data=param_data,
+                                   x=cf_user_examples, initial_decision=initial_decision, cf_decision=cf_decision,
+                                   found_norm=found_norm, num_found=num_found)
+    except:
+        return '<h1>Counterfactuals not found for given parameters</h1>'
 
 
 if __name__ == '__main__':
     app.run(debug=True)
-
